@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; }
+        input, textarea { display: block; width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }
+        button { padding: 8px 16px; cursor: pointer; }
+        .btn-green  { background: #4CAF50; color: white; border: none; }
+        .btn-blue   { background: #2196F3; color: white; border: none; }
+        .btn-red    { background: #f44336; color: white; border: none; }
+        .btn-logout { background: #555; color: white; border: none; float: right; }
+        .post-card  { border: 1px solid #ddd; padding: 14px; margin: 10px 0; border-radius: 6px; }
+        .flash-success { color: green; } .flash-error { color: red; }
+        hr { margin: 30px 0; }
+    </style>
+</head>
+<body>
+
+    <a href="/logout"><button class="btn-logout">Logout</button></a>
+    <h2>Dashboard</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- ── PROFILE SECTION ── -->
+    <h3>Your Profile</h3>
+    <p><strong>Email:</strong> {{ user }}</p>
+    <p><strong>Name:</strong> {{ profile.get('full_name') or 'Not set' }}</p>
+
+    <form method="POST" action="/profile/update">
+        <input name="full_name"  type="text"  placeholder="Full Name"   value="{{ profile.get('full_name') or '' }}">
+        <input name="avatar_url" type="text"  placeholder="Avatar URL"  value="{{ profile.get('avatar_url') or '' }}">
+        <button type="submit" class="btn-blue">Update Profile</button>
+    </form>
+
+    <hr>
+
+    <!-- ── CREATE POST ── -->
+    <h3>Create a Post</h3>
+    <a href="/post/create"><button class="btn-green">+ New Post</button></a>
+
+    <hr>
+
+    <!-- ── POSTS LIST ── -->
+    <h3>Your Posts ({{ posts|length }})</h3>
+
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post-card">
+            <h4>{{ post['title'] }}</h4>
+            <p>{{ post['content'] }}</p>
+            <small>Created: {{ post['created_at'][:10] }}</small>
+            <br><br>
+            <a href="/post/edit/{{ post['id'] }}">
+                <button class="btn-blue">Edit</button>
+            </a>
+            <form method="POST" action="/post/delete/{{ post['id'] }}" style="display:inline;">
+                <button type="submit" class="btn-red"
+                    onclick="return confirm('Delete this post?')">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No posts yet. Create your first one!</p>
+    {% endif %}
+
+</body>
+</html>

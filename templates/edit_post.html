@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 60px auto; padding: 20px; }
+        input, textarea { display: block; width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+        button { padding: 10px 20px; cursor: pointer; }
+        .btn-blue { background: #2196F3; color: white; border: none; }
+        .btn-gray { background: #aaa; color: white; border: none; }
+        .flash-success { color: green; } .flash-error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Edit Post</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <input    name="title"   type="text" value="{{ post['title'] }}"   required>
+        <textarea name="content" rows="6">{{ post['content'] }}</textarea>
+        <button type="submit" class="btn-blue">Save Changes</button>
+        <a href="/dashboard"><button type="button" class="btn-gray">Cancel</button></a>
+    </form>
+</body>
+</html>

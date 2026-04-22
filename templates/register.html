@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 80px auto; padding: 20px; }
+        input { display: block; width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .flash-success { color: green; } .flash-error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Register</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <input name="full_name" type="text" placeholder="Full Name"><br>
+        <input name="email" type="email" placeholder="Email" required><br>
+        <input name="password" type="password" placeholder="Password (min 6 chars)" required><br>
+        <button type="submit">Register</button>
+    </form>
+    <br>
+    <a href="/login">Already have an account? Login</a>
+</body>
+</html>
