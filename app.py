@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, redirect, session, flash
 from supabase import create_client
+from dotenv import load_dotenv
 import os
 
-app = Flask(__name__)
-app.secret_key = "supersecretkey"
+# Load environment variables from .env file
+load_dotenv()
 
-SUPABASE_URL = "https://gvhklqmshcynrpidtrin.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2aGtscW1zaGN5bnJwaWR0cmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4Mzg0MjQsImV4cCI6MjA5MjQxNDQyNH0.74pPFGzR_aahAQ1coP_wPcIti8FxFyPKExgY4eYw3AQ"
+app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY", "fallback-secret-key")
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
